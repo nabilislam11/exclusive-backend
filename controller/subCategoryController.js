@@ -20,13 +20,13 @@ async function subCategoryController(req, res) {
   try {
     return res.status(200).json({
       success: true,
-      messege: "Subcategory create Successfully",
+      message: "Subcategory create Successfully",
       data: category,
     });
   } catch (error) {
-    req.status(500).json({
+    res.status(500).json({
       success: false,
-      messege: "Can't create subcategory",
+      message: "Can't create subcategory",
     });
   }
 }
@@ -35,13 +35,13 @@ async function getAllSubCategoryController(req, res) {
     const subcategory = await subCategorySchema.find();
     return res.status(200).json({
       success: true,
-      messege: "Successfully get all Subcatogories  ",
+      message: "Successfully get all Subcatogories  ",
       data: subcategory,
     });
   } catch (error) {
-    req.status(500).json({
+    res.status(500).json({
       success: false,
-      messege: "Can't find all Subcategory",
+      message: "Can't find all Subcategory",
     });
   }
 }
@@ -51,13 +51,13 @@ async function getSingleSubCategoryController(req, res) {
     const subcategory = await subCategorySchema.findById(id);
     return res.status(200).json({
       success: true,
-      messege: "Successfully get single Subcatogories  ",
+      message: "Successfully get single Subcatogories  ",
       data: subcategory,
     });
   } catch (error) {
-    req.status(500).json({
+    res.status(500).json({
       success: false,
-      messege: "Can't find single Subcategory",
+      message: "Can't find single Subcategory",
     });
   }
 }
@@ -71,15 +71,35 @@ async function updateSubCategoryController(req, res) {
       { $set: { name, description, category } },
       { new: true }
     );
+    await categorySchema.findByIdAndUpdate(category, {
+      $push: { subcategory: subcategory._id },
+    });
+
     return res.status(200).json({
       success: true,
-      messege: "Successfully get single Subcatogories  ",
+      message: "Successfully get single Subcatogories  ",
       data: subcategory,
     });
   } catch (error) {
-    req.status(500).json({
+    res.status(500).json({
       success: false,
-      messege: "Can't find single Subcategory",
+      message: "Can't find single Subcategory",
+    });
+  }
+}
+async function deleteSubCategoryCongtroller(req, res) {
+  const { id } = req.params;
+  try {
+    const subcategory = await subCategorySchema.findByIdAndDelete(id);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully delete Subcatogories  ",
+      data: subcategory,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Can't delete the Subcategory",
     });
   }
 }
@@ -89,4 +109,5 @@ module.exports = {
   getAllSubCategoryController,
   getSingleSubCategoryController,
   updateSubCategoryController,
+  deleteSubCategoryCongtroller,
 };

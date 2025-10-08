@@ -10,7 +10,7 @@ function categoryContoller(req, res) {
   category.save();
   return res.status(200).json({
     success: true,
-    messege: "Category create success fully",
+    message: "Category create success fully",
     data: category,
   });
 }
@@ -19,13 +19,13 @@ async function getAllCategoryContller(req, res) {
     const category = await categorySchema.find().populate("SubCategoryList");
     return res.status(200).json({
       success: true,
-      messege: "Successfully get all catogories  ",
+      message: "Successfully get all catogories  ",
       data: category,
     });
   } catch (error) {
-    req.status(500).json({
+    res.status(500).json({
       success: false,
-      messege: "Somethings Went Wong",
+      message: "Somethings Went Wong",
     });
   }
 }
@@ -36,13 +36,13 @@ async function getSingleCategoryCongtroller(req, res) {
     const singlecategory = await categorySchema.findById(id);
     return res.status(200).json({
       success: true,
-      messege: "Successfully get single catorgies",
+      message: "Successfully get single catorgies",
       data: singlecategory,
     });
   } catch (error) {
     return res.status(500).json({
       success: true,
-      messege: "Can't find the single category.",
+      message: "Can't find the single category.",
     });
   }
 }
@@ -61,13 +61,13 @@ async function updateCategoryController(req, res) {
     );
     return res.status(200).json({
       success: true,
-      messege: "Successfully update catorgies",
+      message: "Successfully update catorgies",
       data: updatecategories,
     });
   } catch (error) {
-    req.status(500).json({
+    res.status(500).json({
       success: false,
-      messege: "Can't update the  category.",
+      message: "Can't update the  category.",
     });
   }
 }
@@ -77,13 +77,13 @@ async function deleteCategoryController(req, res) {
     const deletecategories = await categorySchema.findByIdAndDelete(id);
     return res.status(200).json({
       success: true,
-      messege: "Successfully delete catorgies",
+      message: "Successfully delete catorgies",
       data: deletecategories,
     });
   } catch (error) {
-    req.status(500).json({
+    res.status(500).json({
       success: false,
-      messege: "Can't delete the  category.",
+      message: "Can't delete the  category.",
     });
   }
 }
