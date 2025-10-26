@@ -11,7 +11,7 @@ const subCategorySchema = new Schema({
   },
   category: {
     type: Schema.Types.ObjectId,
-    ref: "categoryList",
+    ref: "CategoryList",
     require: true,
   },
 });

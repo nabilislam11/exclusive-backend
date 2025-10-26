@@ -14,18 +14,23 @@ function categoryContoller(req, res) {
     data: category,
   });
 }
-async function getAllCategoryContller(req, res) {
+async function getAllCategoryContoller(req, res) {
   try {
-    const category = await categorySchema.find().populate("SubCategoryList");
+    const getallategory = await categorySchema
+      .find()
+      .populate("subcategory", "name");
+
     return res.status(200).json({
       success: true,
       message: "Successfully get all catogories  ",
-      data: category,
+      data: getallategory,
     });
   } catch (error) {
+    console.error("Error in getAllCategoryContoller:", error);
     res.status(500).json({
       success: false,
-      message: "Somethings Went Wong",
+      message: "Something went wrong",
+      error: error.message,
     });
   }
 }
@@ -41,8 +46,9 @@ async function getSingleCategoryCongtroller(req, res) {
     });
   } catch (error) {
     return res.status(500).json({
-      success: true,
-      message: "Can't find the single category.",
+      success: false,
+      message: "Internal server error",
+      error: error.message,
     });
   }
 }
@@ -90,7 +96,7 @@ async function deleteCategoryController(req, res) {
 
 module.exports = {
   categoryContoller,
-  getAllCategoryContller,
+  getAllCategoryContoller,
   getSingleCategoryCongtroller,
   updateCategoryController,
   deleteCategoryController,

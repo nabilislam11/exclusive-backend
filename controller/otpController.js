@@ -130,7 +130,6 @@ async function verifyOtp(req, res) {
       if (user.otpAttempts >= 3) {
         user.lockUntil = new Date(Date.now() + 10 * 60 * 1000); //lock for 10min
       }
-
       await user.save();
       return res.status(400).json({
         messege: "invalid otp",

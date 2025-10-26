@@ -10,7 +10,7 @@ async function createProductController(req, res) {
     const product = await new productSchema({
       name,
       description,
-      image: `http://localhost:3000/api/v1/${imageName} `,
+      image: `http://localhost:3000/uploads/${imageName} `,
       price,
       category,
     });
