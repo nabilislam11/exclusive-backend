@@ -32,7 +32,7 @@ async function subCategoryController(req, res) {
 }
 async function getAllSubCategoryController(req, res) {
   try {
-    const subcategory = await subCategorySchema.find();
+    const subcategory = await subCategorySchema.find().populate("category");
     return res.status(200).json({
       success: true,
       message: "Successfully get all Subcatogories  ",
@@ -66,19 +66,25 @@ async function updateSubCategoryController(req, res) {
   const { name, description, category } = req.body;
 
   try {
-    const subcategory = await subCategorySchema.findByIdAndUpdate(
+    const updateSubCategory = await subCategorySchema.findByIdAndUpdate(
       id,
       { $set: { name, description, category } },
       { new: true }
     );
+    // 🔥 Remove old category reference
+    await categorySchema.updateMany(
+      { subcategory: id },
+      { $pull: { subcategory: id } }
+    );
+    // 🔥 Add new category reference
     await categorySchema.findByIdAndUpdate(category, {
-      $push: { subcategory: subcategory._id },
+      $push: { subcategory: updateSubCategory._id },
     });
 
     return res.status(200).json({
       success: true,
       message: "Successfully get single Subcatogories  ",
-      data: subcategory,
+      data: updateSubCategory,
     });
   } catch (error) {
     res.status(500).json({
