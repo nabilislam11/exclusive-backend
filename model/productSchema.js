@@ -39,6 +39,11 @@ const productSchema = new Schema({
   category: {
     type: Schema.Types.ObjectId,
     ref: "categoryList",
+    require: true,
+  },
+  subcategory: {
+    type: Schema.Types.ObjectId,
+    ref: "categoryList",
   },
 });
 module.exports = mongoose.model("productList", productSchema);

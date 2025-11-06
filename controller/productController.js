@@ -1,3 +1,4 @@
+const uploadImage = require("../helpers/cloudinary");
 const productSchema = require("../model/productSchema");
 
 async function createProductController(req, res) {
@@ -5,12 +6,16 @@ async function createProductController(req, res) {
   console.log(name, description, category, price, image);
 
   // get the uploaded file name
-  const imageName = req.file.filename;
+  // const imageName = req.file.filename;
+  const imgPath = req.file.path;
+  console.log(imgPath);
+  const imgUrl = await uploadImage(imgPath);
+  console.log(imgUrl, "img");
   try {
     const product = await new productSchema({
       name,
       description,
-      image: `http://localhost:3000/uploads/${imageName} `,
+      image: imgUrl.secure_url,
       price,
       category,
     });
