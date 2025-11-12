@@ -19,7 +19,7 @@ const productSchema = new Schema({
     type: String,
   },
   stock: {
-    type: String,
+    type: Number,
   },
   discount: {
     type: Number,
@@ -34,7 +34,7 @@ const productSchema = new Schema({
     type: String,
   },
   reting: {
-    type: String,
+    type: Number,
   },
   category: {
     type: Schema.Types.ObjectId,

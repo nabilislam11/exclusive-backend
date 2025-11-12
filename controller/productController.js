@@ -33,4 +33,21 @@ async function createProductController(req, res) {
     });
   }
 }
-module.exports = createProductController;
+async function getAllProductController(req, res) {
+  try {
+    const product = await productSchema.find().sort({ createdAt: -1 });
+    return res.status(200).json({
+      success: true,
+      message: "Successfully get all Product  ",
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Can't find all Product",
+      error: error.message,
+    });
+  }
+}
+
+module.exports = { createProductController, getAllProductController };
