@@ -38,12 +38,12 @@ const productSchema = new Schema({
   },
   category: {
     type: Schema.Types.ObjectId,
-    ref: "categoryList",
+    ref: "CategoryList",
     require: true,
   },
   subcategory: {
     type: Schema.Types.ObjectId,
-    ref: "categoryList",
+    ref: "SubCategoryList",
   },
 });
 module.exports = mongoose.model("productList", productSchema);

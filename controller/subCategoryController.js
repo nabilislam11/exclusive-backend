@@ -32,7 +32,9 @@ async function subCategoryController(req, res) {
 }
 async function getAllSubCategoryController(req, res) {
   try {
-    const subcategory = await subCategorySchema.find().populate("category");
+    const subcategory = await subCategorySchema
+      .find()
+      .populate("category", "name");
     return res.status(200).json({
       success: true,
       message: "Successfully get all Subcatogories  ",

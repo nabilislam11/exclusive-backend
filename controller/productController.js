@@ -2,8 +2,8 @@ const uploadImage = require("../helpers/cloudinary");
 const productSchema = require("../model/productSchema");
 
 async function createProductController(req, res) {
-  const { name, description, category, price, image } = req.body;
-  console.log(name, description, category, price, image);
+  const { name, description, category, price, image, subcategory } = req.body;
+  console.log(name, description, category, price, image, subcategory);
 
   // get the uploaded file name
   // const imageName = req.file.filename;
@@ -18,6 +18,7 @@ async function createProductController(req, res) {
       image: imgUrl.secure_url,
       price,
       category,
+      subcategory,
     });
     await product.save();
     return res.status(200).json({
@@ -35,7 +36,16 @@ async function createProductController(req, res) {
 }
 async function getAllProductController(req, res) {
   try {
-    const product = await productSchema.find().sort({ createdAt: -1 });
+    const product = await productSchema
+      .find()
+      .populate({
+        path: "category",
+        populate: {
+          path: "subcategory",
+        },
+      })
+      .populate("subcategory")
+      .sort({ createdAt: -1 });
     return res.status(200).json({
       success: true,
       message: "Successfully get all Product  ",
