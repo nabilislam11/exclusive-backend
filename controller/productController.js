@@ -2,8 +2,31 @@ const uploadImage = require("../helpers/cloudinary");
 const productSchema = require("../model/productSchema");
 
 async function createProductController(req, res) {
-  const { name, description, category, price, image, subcategory } = req.body;
-  console.log(name, description, category, price, image, subcategory);
+  const {
+    name,
+    description,
+    category,
+    price,
+    image,
+    rating,
+    quantity,
+    stock,
+    newprice,
+    subcategory,
+    discount,
+  } = req.body;
+  console.log(
+    name,
+    description,
+    category,
+    price,
+    quantity,
+    stock,
+    rating,
+    image,
+    discount,
+    subcategory
+  );
 
   // get the uploaded file name
   // const imageName = req.file.filename;
@@ -17,6 +40,11 @@ async function createProductController(req, res) {
       description,
       image: imgUrl.secure_url,
       price,
+      rating,
+      quantity,
+      stock,
+      newprice,
+      discount,
       category,
       subcategory,
     });
@@ -36,20 +64,32 @@ async function createProductController(req, res) {
 }
 async function getAllProductController(req, res) {
   try {
+    const page = req.query.page;
+    console.log(page, "Page");
+    const size = req.query.size;
+    console.log(size, "Size");
+    const skip = (page - 1) * size;
+    console.log(skip);
+
+    const totalPoduct = await productSchema.countDocuments({});
+    console.log(totalPoduct, "TotalProduct");
+
     const product = await productSchema
       .find()
+      .limit(size)
+      .skip(skip)
       .populate({
         path: "category",
         populate: {
           path: "subcategory",
         },
       })
-      .populate("subcategory")
-      .sort({ createdAt: -1 });
+      .populate("subcategory");
     return res.status(200).json({
       success: true,
       message: "Successfully get all Product  ",
       data: product,
+      total: totalPoduct,
     });
   } catch (error) {
     res.status(500).json({

@@ -10,10 +10,12 @@ const productSchema = new Schema({
     type: String,
     required: true,
   },
-
   price: {
     type: Number,
     required: true,
+  },
+  newprice: {
+    type: Number,
   },
   review: {
     type: String,
@@ -33,7 +35,7 @@ const productSchema = new Schema({
   image: {
     type: String,
   },
-  reting: {
+  rating: {
     type: Number,
   },
   category: {
