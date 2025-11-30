@@ -99,5 +99,25 @@ async function getAllProductController(req, res) {
     });
   }
 }
-
-module.exports = { createProductController, getAllProductController };
+async function getSingleProductController(req, res) {
+  const { id } = req.params;
+  try {
+    const product = await productSchema.findById(id);
+    return res.status(200).json({
+      success: true,
+      message: "Successfully get single Product  ",
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Can't find single Product",
+      error: error.message,
+    });
+  }
+}
+module.exports = {
+  createProductController,
+  getAllProductController,
+  getSingleProductController,
+};
